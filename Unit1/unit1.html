@@ -12,56 +12,123 @@
       margin: 0;
       padding: 0;
       color: #333;
+      line-height: 1.6;
     }
+
     header {
-      background-color: #0052D4;
+      background: linear-gradient(135deg, #0052D4, #4364F7);
       color: white;
-      padding: 60px 20px;
+      padding: 80px 20px 60px;
       text-align: center;
     }
+
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
+      margin-bottom: 10px;
     }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+    }
+
     .container {
       max-width: 1100px;
-      margin: 40px auto;
+      margin: 60px auto;
       padding: 0 20px;
     }
+
     .topic {
       background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      padding: 25px 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+    .topic:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+    }
+
     .topic h2 {
       color: #0052D4;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
     }
+
     .resources {
       margin-top: 10px;
     }
+
     .resources a {
       display: inline-block;
-      margin-right: 10px;
-      margin-top: 10px;
-      padding: 10px 14px;
+      margin: 8px 10px 0 0;
+      padding: 10px 16px;
       background-color: #0052D4;
       color: white;
       text-decoration: none;
       border-radius: 6px;
       font-size: 0.9rem;
+      font-weight: 500;
       transition: background-color 0.3s ease;
     }
+
     .resources a:hover {
       background-color: #003EAA;
     }
+
+    .resources a:nth-child(1) {
+      background-color: #4CAF50; /* 🎥 Video - Yeşilimsi */
+    }
+
+    .resources a:nth-child(2) {
+      background-color: #FF9800; /* 🧩 Etkileşimli - Turuncu */
+    }
+
+    .resources a:nth-child(3) {
+      background-color: #607D8B; /* 📝 Ödev - Gri-mavi */
+    }
+
+    .resources a:nth-child(1):hover {
+      background-color: #388E3C;
+    }
+
+    .resources a:nth-child(2):hover {
+      background-color: #FB8C00;
+    }
+
+    .resources a:nth-child(3):hover {
+      background-color: #455A64;
+    }
+
     footer {
       text-align: center;
-      padding: 30px;
+      padding: 40px 20px;
       background-color: #e3e8f0;
       font-size: 0.9rem;
       color: #555;
-      margin-top: 60px;
+      margin-top: 80px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      .topic h2 {
+        font-size: 1.1rem;
+      }
+
+      .resources a {
+        display: block;
+        margin: 8px 0;
+      }
     }
   </style>
 </head>
@@ -72,11 +139,10 @@
   </header>
 
   <section class="container">
-
     <div class="topic">
       <h2>1.1 Selamlaşma ve Vedalaşma</h2>
       <div class="resources">
-        <a href="#">🎥 Ders Videosu</a>
+        <a href="unit1_1video.html">🎥 Ders Videosu</a>
         <a href="#">🧩 Etkileşimli İçerik</a>
         <a href="#">📝 Ödev</a>
       </div>
@@ -126,7 +192,6 @@
         <a href="#">📝 Ödev</a>
       </div>
     </div>
-
   </section>
 
   <footer>
