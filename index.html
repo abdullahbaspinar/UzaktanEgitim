@@ -323,6 +323,22 @@
       }
     }
   </style>
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBLXLtI9N3iT94bpDXGcxqgNk67xEWU6nU",
+    authDomain: "uzaktanegitim-forum.firebaseapp.com",
+    databaseURL: "https://uzaktanegitim-forum-default-rtdb.firebaseio.com",
+    projectId: "uzaktanegitim-forum",
+    storageBucket: "uzaktanegitim-forum.appspot.com",
+    messagingSenderId: "157485126536",
+    appId: "1:157485126536:web:985d13c464f8373151e03d"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+
 </head>
 <body>
 
@@ -390,7 +406,6 @@
     alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
   }
 
-  // Sayfa yüklendiğinde kontrol et
   window.addEventListener('DOMContentLoaded', () => {
     if (!localStorage.getItem('icebreakerSubmitted')) {
       document.getElementById('icebreakerModal').style.display = 'flex';
@@ -399,6 +414,7 @@
     }
   });
 </script>
+
 
 
   <header>
