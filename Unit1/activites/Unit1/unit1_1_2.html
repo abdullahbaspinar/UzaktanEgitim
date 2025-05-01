@@ -161,12 +161,14 @@
 <body>
   <nav>
     <div class="nav-brand">Almanca Platformu</div>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
     <div class="nav-links">
       <a href="/index.html">Ana Sayfa</a>
-      <a href="#">Ünite</a>
-      <a href="#">İletişim</a>
+      <a href="#units">Üniteler</a>
+      <a href="#about">Hakkımızda</a>
+      <a href="#contact">İletişim</a>
     </div>
-    <button id="themeToggle">🌙</button>
+    <button id="themeToggle" aria-label="Tema Değiştir">🌙</button>
   </nav>
 
   <header>

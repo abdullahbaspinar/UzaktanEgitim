@@ -6,7 +6,6 @@
   <title>1. Ünite - Hallo! Ich bin…</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Mobil menü arka planı açık ve koyu temaya göre değişsin */
 @media (max-width: 768px) {
   body.dark .nav-links {
     background-color: #1e1e1e;
@@ -256,25 +255,23 @@
 </head>
 <body>
 
-  <!-- 🔹 NAVBAR (Ana sayfa ile aynı yapı) -->
   <nav>
     <div class="nav-brand">Almanca Platformu</div>
     <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
     <div class="nav-links">
-      <a href="#">Ana Sayfa</a>
-      <a href="#topics">Konular</a>
+      <a href="/index.html">Ana Sayfa</a>
+      <a href="#units">Üniteler</a>
+      <a href="#about">Hakkımızda</a>
       <a href="#contact">İletişim</a>
     </div>
     <button id="themeToggle" aria-label="Tema Değiştir">🌙</button>
   </nav>
 
-  <!-- 🔹 HEADER -->
   <header>
     <h1>🧩 1. Ünite: Hallo! Ich bin…</h1>
     <p>Selamlaşma, tanışma, kişi zamirleri ve temel fiil kullanımı</p>
   </header>
 
-  <!-- 🔹 ÜNİTE KONULARI -->
   <section class="container" id="topics">
     <div class="topic">
       <h2>1.1 Selamlaşma ve Vedalaşma</h2>
@@ -284,15 +281,12 @@
         <a href="Homework/unit1_1homework.html">📝 Ödev</a>
       </div>
     </div>
-    <!-- Diğer konular aynı şekilde devam eder -->
   </section>
 
-  <!-- 🔹 FOOTER -->
   <footer id="contact">
     &copy; 2025 Almanca Uzaktan Eğitim Platformu. Tüm hakları saklıdır.
   </footer>
 
-  <!-- 🔹 JS -->
   <script>
     const themeToggle = document.getElementById('themeToggle');
     const savedTheme = localStorage.getItem('theme');
