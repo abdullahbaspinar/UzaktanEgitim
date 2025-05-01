@@ -338,6 +338,68 @@
     </div>
     <button id="themeToggle" aria-label="Tema Değiştir">🌙</button>
   </nav>
+  <!-- Buzkıran Etkinliği Popup -->
+<div id="icebreakerModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <div id="icebreakerContent" style="background-color:#fff;color:#333;padding:30px 20px;border-radius:16px;max-width:500px;width:90%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);position:relative;">
+    <h2 style="margin-bottom:10px;font-size:1.6rem;">🚀 Buzları Kıralım!</h2>
+    <p style="font-size:1rem;">Seninle başlamadan önce birbirimizi tanıyalım. 🎓</p>
+    <p style="margin-top:8px;font-weight:600;">Almanca'yı öğrenmek istemendeki en büyük sebep nedir?</p>
+    <textarea id="icebreakerInput"
+              rows="4"
+              placeholder="Kısa bir yanıt yaz..."
+              style="width:100%;padding:12px;margin:16px 0;border:1px solid #ccc;border-radius:8px;font-size:1rem;resize:vertical;"></textarea>
+    <button onclick="submitIcebreaker()"
+            style="background:#0052D4;color:white;padding:12px 24px;border:none;border-radius:8px;font-weight:600;font-size:1rem;">
+      Başlayalım
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Dark mode uyumu */
+  body.dark #icebreakerContent {
+    background-color: #2a2a2a;
+    color: #f2f2f2;
+  }
+
+  body.dark #icebreakerInput {
+    background-color: #333;
+    color: #f2f2f2;
+    border-color: #555;
+  }
+</style>
+
+<script>
+  function submitIcebreaker() {
+    const input = document.getElementById('icebreakerInput');
+    const answer = input.value.trim();
+    if (!answer) return alert('Lütfen cevabınızı yazın.');
+
+    localStorage.setItem('icebreakerSubmitted', 'true');
+    const timestamp = Date.now();
+
+    // Firebase’e gönder
+    if (typeof firebase !== 'undefined') {
+      firebase.database().ref('icebreakers').push({
+        answer,
+        timestamp
+      });
+    }
+
+    document.getElementById('icebreakerModal').style.display = 'none';
+    alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
+  }
+
+  // Sayfa yüklendiğinde kontrol et
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!localStorage.getItem('icebreakerSubmitted')) {
+      document.getElementById('icebreakerModal').style.display = 'flex';
+    } else {
+      document.getElementById('icebreakerModal').style.display = 'none';
+    }
+  });
+</script>
+
 
   <header>
     <h1>Almanca Uzaktan Eğitim Platformu</h1>
