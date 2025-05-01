@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forum | Almanca Platformu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0052D4;
+      --primary-dark: #003EAA;
+      --bg: #f4f6fa;
+      --text: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding-bottom: 80px;
+    }
+
+    nav {
+      background-color: var(--primary);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-brand {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #themeToggle {
+      font-size: 1.3rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    form button {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .post {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .replies p {
+      margin-left: 1rem;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .admin-buttons {
+      margin-top: 10px;
+    }
+
+    .admin-buttons button {
+      background: #e53935;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      margin-right: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .admin-buttons button.edit {
+      background: #fbc02d;
+      color: black;
+    }
+
+    /* DARK MODE */
+    body.dark {
+      background-color: #1e1e1e;
+      color: #f2f2f2;
+    }
+
+    body.dark nav {
+      background-color: #222;
+    }
+
+    body.dark .nav-links a {
+      color: #f2c94c;
+    }
+
+    body.dark h1 {
+      color: #f2c94c;
+    }
+
+    body.dark .post {
+      background-color: #2a2a2a;
+      color: #f2f2f2;
+    }
+
+    body.dark .replies p {
+      color: #ccc;
+    }
+
+    body.dark form textarea {
+      background-color: #2c2c2c;
+      color: #eee;
+      border-color: #666;
+    }
+
+    body.dark form button {
+      background-color: #f2c94c;
+      color: #222;
+    }
+
+    body.dark form button:hover {
+      background-color: #e2b93b;
+    }
+
+    body.dark .admin-buttons button.edit {
+      background-color: #f2c94c;
+      color: black;
+    }
+
+    body.dark .admin-buttons button {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-brand">Almanca Platformu</div>
+    <div class="nav-links">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="index.html#units">Üniteler</a>
+      <a href="index.html#about">Hakkımızda</a>
+      <a href="index.html#contact">İletişim</a>
+      <a href="forum.html">Forum</a>
+    </div>
+    <button id="themeToggle">🌙</button>
+  </nav>
+
+  <section class="container">
+    <h1>Anonim Forum</h1>
+
+    <form id="newPostForm">
+      <textarea id="postContent" placeholder="Yeni bir konu başlat..." required></textarea>
+      <button type="submit">Paylaş</button>
+    </form>
+
+    <div id="postsContainer"></div>
+  </section>
+
+  <script>
+    // Tema toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.body.classList.add('dark');
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Admin kontrol
+    function isAdmin() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('admin') === '1234';
+    }
+
+    // Forum fonksiyonları
+    document.addEventListener('DOMContentLoaded', () => {
+      const postForm = document.getElementById('newPostForm');
+      const postsContainer = document.getElementById('postsContainer');
+      const LOCAL_KEY = 'anonForumPosts';
+
+      const getPosts = () => JSON.parse(localStorage.getItem(LOCAL_KEY)) || [];
+      const savePosts = (posts) => localStorage.setItem(LOCAL_KEY, JSON.stringify(posts));
+
+      const renderPosts = () => {
+        postsContainer.innerHTML = '';
+        const posts = getPosts();
+        posts.forEach((post, index) => {
+          const div = document.createElement('div');
+          div.className = 'post';
+          div.innerHTML = `
+            <p>${post.content}</p>
+            <div class="replies">
+              ${post.replies.map(r => `<p>↳ ${r}</p>`).join('')}
+            </div>
+            ${isAdmin() ? `
+              <div class="admin-buttons">
+                <button onclick="deletePost(${index})">🗑 Sil</button>
+                <button class="edit" onclick="editPost(${index})">✏️ Düzenle</button>
+              </div>
+            ` : ''}
+            <form class="reply-form" data-index="${index}">
+              <textarea placeholder="Yanıtla..." required></textarea>
+              <button type="submit">Gönder</button>
+            </form>
+          `;
+          postsContainer.appendChild(div);
+        });
+      };
+
+      postForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const content = document.getElementById('postContent').value.trim();
+        if (content) {
+          const posts = getPosts();
+          posts.unshift({ content, replies: [] });
+          savePosts(posts);
+          renderPosts();
+          postForm.reset();
+        }
+      });
+
+      postsContainer.addEventListener('submit', (e) => {
+        if (e.target.classList.contains('reply-form')) {
+          e.preventDefault();
+          const index = e.target.dataset.index;
+          const textarea = e.target.querySelector('textarea');
+          const reply = textarea.value.trim();
+          if (reply) {
+            const posts = getPosts();
+            posts[index].replies.push(reply);
+            savePosts(posts);
+            renderPosts();
+          }
+        }
+      });
+
+      window.deletePost = function(index) {
+        if (confirm("Bu gönderiyi silmek istiyor musun?")) {
+          const posts = getPosts();
+          posts.splice(index, 1);
+          savePosts(posts);
+          renderPosts();
+        }
+      };
+
+      window.editPost = function(index) {
+        const posts = getPosts();
+        const newText = prompt("Yeni içerik:", posts[index].content);
+        if (newText !== null && newText.trim() !== "") {
+          posts[index].content = newText.trim();
+          savePosts(posts);
+          renderPosts();
+        }
+      };
+
+      renderPosts();
+    });
+  </script>
+</body>
+</html>
