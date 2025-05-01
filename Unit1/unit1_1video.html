@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ders Videosu - 1.1 Selamlasma ve Vedalasma</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ders Videosu - 1.1 Selamlaşma ve Vedalaşma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
+    @media (max-width: 768px) {
+  body.dark .nav-links {
+    background-color: #1e1e1e;
+  }
+
+  body:not(.dark) .nav-links {
+    background-color: var(--primary);
+  }
+}
     :root {
       --primary: #0052D4;
       --primary-dark: #003EAA;
@@ -68,7 +77,7 @@
     }
 
     .nav-links a:hover {
-      color: #f2c94c;
+      color: var(--yellow);
     }
 
     #themeToggle {
@@ -135,7 +144,26 @@
     }
 
     .buttons a:hover {
-      background-color: #003EAA;
+      background-color: var(--primary-dark);
+    }
+
+    .transcript {
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .transcript h2 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: var(--primary);
+    }
+
+    .transcript p {
+      font-size: 1rem;
+      line-height: 1.7;
     }
 
     footer {
@@ -177,25 +205,34 @@
     }
 
     body.dark .nav-links a {
-      color: #f2c94c;
+      color: var(--yellow);
     }
 
     body.dark header {
       background: linear-gradient(135deg, #2a2a2a, #444);
-      color: #f2c94c;
+      color: var(--yellow);
     }
 
     body.dark #themeToggle {
-      color: #f2c94c;
+      color: var(--yellow);
     }
 
     body.dark .buttons a {
-      background-color: #f2c94c;
+      background-color: var(--yellow);
       color: #222;
     }
 
     body.dark .buttons a:hover {
-      background-color: #e2b93b;
+      background-color: var(--yellow-dark);
+    }
+
+    body.dark .transcript {
+      background-color: #2a2a2a;
+      color: #f2f2f2;
+    }
+
+    body.dark .transcript h2 {
+      color: var(--yellow);
     }
 
     body.dark footer {
@@ -230,6 +267,11 @@
     <div class="buttons">
       <a href="unit1_1activities.html">🧩 Etkileşimli İçeriğe Git</a>
       <a href="#">📝 Ödeve Git</a>
+    </div>
+
+    <div class="transcript">
+      <h2>🎧 Video Transkripsiyonu</h2>
+      <p><strong>Merhaba!</strong> Bugünkü dersimizde Almanca'da selamlaşma ve vedalaşma ifadelerini öğreniyoruz. "Hallo" Almanca'da en yaygın kullanılan selamlaşma kelimesidir ve Türkçe'de "Merhaba" anlamına gelir. "Guten Morgen" sabah saatlerinde kullanılan bir ifadedir ve "Günaydın" demektir. "Tschüss" ise gayriresmi bir vedalaşma biçimidir ve "Hoşçakal" anlamında kullanılır. Ders sonunda, bu ifadeleri diyaloglarda nasıl kullanacağımızı pratik yapacağız.</p>
     </div>
   </div>
 
