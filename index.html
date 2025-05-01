@@ -24,6 +24,7 @@
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     nav {
@@ -49,6 +50,7 @@
       color: white;
       background: none;
       border: none;
+      cursor: pointer;
     }
 
     .nav-links {
@@ -65,6 +67,15 @@
 
     .nav-links a:hover {
       color: #cde2ff;
+    }
+
+    #themeToggle {
+      font-size: 1.3rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      margin-left: 1rem;
     }
 
     header {
@@ -195,6 +206,77 @@
       margin-top: 80px;
     }
 
+    /* 🌙 DARK MODE STYLES (sarı temalı) */
+    body.dark {
+      background-color: #1e1e1e;
+      color: #f2f2f2;
+    }
+
+    body.dark nav {
+      background-color: #222;
+    }
+
+    body.dark .nav-links a {
+      color: #f2c94c;
+    }
+
+    body.dark header {
+      background: linear-gradient(135deg, #2a2a2a, #444);
+      color: #f2c94c;
+    }
+
+    body.dark #themeToggle {
+      color: #f2c94c;
+    }
+
+    body.dark .container > h2 {
+      color: #f2c94c;
+      border-left-color: #f2c94c;
+    }
+
+    body.dark .unit {
+      background-color: #2b2b2b;
+      color: #f2f2f2;
+    }
+
+    body.dark .unit h3 {
+      color: #f2c94c;
+    }
+
+    body.dark .unit p {
+      color: #ddd;
+    }
+
+    body.dark .unit a {
+      background-color: #f2c94c;
+      color: #222;
+    }
+
+    body.dark .unit a:hover {
+      background-color: #e2b93b;
+    }
+
+    body.dark form input,
+    body.dark form textarea {
+      background-color: #2c2c2c;
+      color: #eee;
+      border-color: #666;
+    }
+
+    body.dark form button {
+      background-color: #f2c94c;
+      color: #222;
+    }
+
+    body.dark form button:hover {
+      background-color: #e2b93b;
+    }
+
+    body.dark footer {
+      background-color: #222;
+      color: #ccc;
+    }
+
     @media (max-width: 768px) {
       .nav-links {
         display: none;
@@ -236,6 +318,7 @@
       <a href="#about">Hakkımızda</a>
       <a href="#contact">İletişim</a>
     </div>
+    <button id="themeToggle" aria-label="Tema Değiştir">🌙</button>
   </nav>
 
   <header>
@@ -292,6 +375,24 @@
   </footer>
 
   <script>
+    // Dark mode toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.body.classList.add('dark');
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Mailto form gönderimi
     function sendMail(event) {
       event.preventDefault();
       const name = encodeURIComponent(document.getElementById('name').value);
@@ -299,7 +400,6 @@
       const message = encodeURIComponent(document.getElementById('message').value);
       const subject = encodeURIComponent("Görüş & Öneri");
       const body = `Ad: ${name}%0AE-posta: ${email}%0AMesaj:%0A${message}`;
-
       window.location.href = `mailto:aabdullahbaspinarr@gmail.com?subject=${subject}&body=${body}`;
     }
   </script>
