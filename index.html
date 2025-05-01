@@ -6,6 +6,13 @@
   <title>Almanca Uzaktan Eğitim Platformu</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #0052D4;
+      --primary-dark: #003EAA;
+      --bg: #f4f6fa;
+      --text: #333;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -14,26 +21,67 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #f4f6fa;
-      color: #333;
+      background-color: var(--bg);
+      color: var(--text);
       line-height: 1.6;
     }
 
+    nav {
+      background-color: var(--primary);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-brand {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: white;
+      background: none;
+      border: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #cde2ff;
+    }
+
     header {
-      background: linear-gradient(135deg, #0052D4, #4364F7);
+      background: linear-gradient(135deg, var(--primary), #4364F7);
       color: white;
       padding: 100px 20px 80px;
       text-align: center;
     }
 
     header h1 {
-      font-size: 3.2rem;
+      font-size: 3rem;
       font-weight: 700;
     }
 
     header p {
-      font-size: 1.25rem;
-      margin-top: 12px;
+      font-size: 1.2rem;
+      margin-top: 10px;
       opacity: 0.95;
     }
 
@@ -47,8 +95,7 @@
       font-size: 2rem;
       font-weight: 600;
       margin-bottom: 30px;
-      color: #222;
-      border-left: 6px solid #0052D4;
+      border-left: 6px solid var(--primary);
       padding-left: 12px;
     }
 
@@ -74,7 +121,7 @@
 
     .unit h3 {
       font-size: 1.2rem;
-      color: #0052D4;
+      color: var(--primary);
       margin-bottom: 10px;
     }
 
@@ -88,7 +135,7 @@
       display: inline-block;
       margin-top: 18px;
       padding: 10px 20px;
-      background-color: #0052D4;
+      background-color: var(--primary);
       color: white;
       text-decoration: none;
       border-radius: 6px;
@@ -97,7 +144,7 @@
     }
 
     .unit a:hover {
-      background-color: #003EAA;
+      background-color: var(--primary-dark);
     }
 
     .locked a {
@@ -116,6 +163,29 @@
       opacity: 0.6;
     }
 
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    form button {
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: var(--primary-dark);
+    }
+
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -125,25 +195,55 @@
       margin-top: 80px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: var(--primary);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
       header h1 {
         font-size: 2.2rem;
       }
+
       .container > h2 {
         font-size: 1.5rem;
       }
     }
   </style>
 </head>
-
-
 <body>
+
+  <nav>
+    <div class="nav-brand">Almanca Platformu</div>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
+    <div class="nav-links">
+      <a href="#">Ana Sayfa</a>
+      <a href="#units">Üniteler</a>
+      <a href="#about">Hakkımızda</a>
+      <a href="#contact">İletişim</a>
+    </div>
+  </nav>
+
   <header>
     <h1>Almanca Uzaktan Eğitim Platformu</h1>
     <p>Ünite bazlı öğrenme ile Almanca'yı kolayca keşfedin!</p>
   </header>
 
-  <section class="container">
+  <section class="container" id="units">
     <h2>Üniteler</h2>
     <div class="unit-grid">
       <div class="unit">
@@ -164,35 +264,45 @@
     </div>
   </section>
 
+  <section class="container" id="about">
+    <h2>Hakkımızda</h2>
+    <p style="max-width: 800px; margin-bottom: 40px;">
+      Almanca Uzaktan Eğitim Platformu, dil öğrenimini herkes için erişilebilir kılmayı amaçlayan bir eğitim projesidir. Yapılandırılmış içeriklerle Almanca’yı etkili biçimde öğrenmenizi destekler.
+    </p>
+  </section>
+
+  <section class="container" id="contact">
+    <h2>Görüş & Önerileriniz</h2>
+    <form onsubmit="sendMail(event)">
+      <label for="name">Adınız</label>
+      <input type="text" id="name" required>
+
+      <label for="email">E-posta Adresiniz</label>
+      <input type="email" id="email" required>
+
+      <label for="message">Mesajınız</label>
+      <textarea id="message" rows="5" required></textarea>
+
+      <button type="submit">Gönder</button>
+    </form>
+  </section>
+
   <footer>
     &copy; 2025 Almanca Uzaktan Eğitim Platformu. Tüm hakları saklıdır.
   </footer>
-<!-- Chatbot Kodu - Chatbase -->
-<script>
-    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="fmGhmZopdiKau9QTCrAFx";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 
-  window.chatbaseConfig = {
-    chatbotId: "rpppmevpv5hpr3m73k0py9j74cuznv8k", // Kendi bot ID'iniz
-    chatbotFrame: {
-      style: {
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-        zIndex: 9999,
-        borderRadius: "12px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
-      }
-    },
-    buttonStyle: {
-      backgroundColor: "#0052D4",
-      color: "#fff",
-      borderRadius: "50%",
-      width: "56px",
-      height: "56px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+  <script>
+    function sendMail(event) {
+      event.preventDefault();
+      const name = encodeURIComponent(document.getElementById('name').value);
+      const email = encodeURIComponent(document.getElementById('email').value);
+      const message = encodeURIComponent(document.getElementById('message').value);
+      const subject = encodeURIComponent("Görüş & Öneri");
+      const body = `Ad: ${name}%0AE-posta: ${email}%0AMesaj:%0A${message}`;
+
+      window.location.href = `mailto:aabdullahbaspinarr@gmail.com?subject=${subject}&body=${body}`;
     }
-  };
-
   </script>
+
 </body>
 </html>
