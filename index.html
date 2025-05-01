@@ -6,6 +6,17 @@
   <title>Almanca Uzaktan Eğitim Platformu</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Mobil menü arka planı açık ve koyu temaya göre değişsin */
+@media (max-width: 768px) {
+  body.dark .nav-links {
+    background-color: #1e1e1e;
+  }
+
+  body:not(.dark) .nav-links {
+    background-color: var(--primary);
+  }
+}
+
     :root {
       --primary: #0052D4;
       --primary-dark: #003EAA;

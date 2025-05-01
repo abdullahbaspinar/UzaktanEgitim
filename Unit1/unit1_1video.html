@@ -3,20 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ders Videosu - 1.1 Selamlaşma ve Vedalaşma</title>
+  <title>Ders Videosu - 1.1 Selamlasma ve Vedalasma</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6fa;
+    :root {
+      --primary: #0052D4;
+      --primary-dark: #003EAA;
+      --yellow: #f2c94c;
+      --yellow-dark: #e2b93b;
+      --bg: #f4f6fa;
+      --text: #333;
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      color: #333;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav {
+      background-color: var(--primary);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-brand {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #f2c94c;
+    }
+
+    #themeToggle {
+      font-size: 1.3rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      margin-left: 1rem;
     }
 
     header {
-      background-color: #0052D4;
+      background: linear-gradient(135deg, var(--primary), #4364F7);
       color: white;
       text-align: center;
       padding: 60px 20px 40px;
@@ -34,7 +99,7 @@
 
     .video-wrapper {
       position: relative;
-      padding-bottom: 56.25%; /* 16:9 oranı */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
       border-radius: 10px;
@@ -80,30 +145,77 @@
       font-size: 0.9rem;
       color: #555;
     }
-    .back-home {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background-color: #0052D4;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  transition: background-color 0.3s ease;
-}
 
-.back-home:hover {
-  background-color: #003EAA;
-}
+    /* Responsive nav */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: var(--primary);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .nav-toggle {
+        display: block;
+      }
+    }
 
+    /* Dark mode */
+    body.dark {
+      background-color: #1e1e1e;
+      color: #f2f2f2;
+    }
+
+    body.dark nav {
+      background-color: #222;
+    }
+
+    body.dark .nav-links a {
+      color: #f2c94c;
+    }
+
+    body.dark header {
+      background: linear-gradient(135deg, #2a2a2a, #444);
+      color: #f2c94c;
+    }
+
+    body.dark #themeToggle {
+      color: #f2c94c;
+    }
+
+    body.dark .buttons a {
+      background-color: #f2c94c;
+      color: #222;
+    }
+
+    body.dark .buttons a:hover {
+      background-color: #e2b93b;
+    }
+
+    body.dark footer {
+      background-color: #222;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
-    <a href="/index.html" class="back-home">🏠 Anasayfa</a>
+
+  <nav>
+    <div class="nav-brand">Almanca Platformu</div>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
+    <div class="nav-links">
+      <a href="/index.html">Ana Sayfa</a>
+      <a href="#">Ünite</a>
+      <a href="#">İletişim</a>
+    </div>
+    <button id="themeToggle" aria-label="Tema Değiştir">🌙</button>
+  </nav>
 
   <header>
     <h1>🎥 1.1 Ders Videosu: Selamlaşma ve Vedalaşma</h1>
@@ -111,7 +223,8 @@
 
   <div class="container">
     <div class="video-wrapper">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/5K3mwMAQqUE?si=5oxNZOaiPpMkWiM4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>    </div>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/5K3mwMAQqUE?si=5oxNZOaiPpMkWiM4" title="YouTube video player" allowfullscreen></iframe>
+    </div>
 
     <div class="buttons">
       <a href="unit1_1activities.html">🧩 Etkileşimli İçeriğe Git</a>
@@ -122,31 +235,23 @@
   <footer>
     &copy; 2025 Almanca Uzaktan Eğitim Platformu. Tüm hakları saklıdır.
   </footer>
+
   <script>
-    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="fmGhmZopdiKau9QTCrAFx";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  window.chatbaseConfig = {
-    chatbotId: "rpppmevpv5hpr3m73k0py9j74cuznv8k", // Kendi bot ID'iniz
-    chatbotFrame: {
-      style: {
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-        zIndex: 9999,
-        borderRadius: "12px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
-      }
-    },
-    buttonStyle: {
-      backgroundColor: "#0052D4",
-      color: "#fff",
-      borderRadius: "50%",
-      width: "56px",
-      height: "56px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.body.classList.add('dark');
+      themeToggle.textContent = '☀️';
     }
-  };
 
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
   </script>
 
 </body>
