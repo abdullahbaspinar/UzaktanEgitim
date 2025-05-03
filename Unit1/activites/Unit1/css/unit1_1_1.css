@@ -1,0 +1,233 @@
+:root {
+    --primary: #0052D4;
+    --primary-dark: #003EAA;
+    --yellow: #f2c94c;
+    --bg: #f4f6fa;
+    --text: #333;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  nav {
+    background-color: var(--primary);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .nav-brand {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--yellow);
+  }
+
+  #themeToggle {
+    font-size: 1.3rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--primary), #4364F7);
+    color: white;
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .question-block {
+    background: white;
+    border-radius: 12px;
+    padding: 25px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .question-block h3 {
+    color: var(--primary);
+    transition: color 0.3s ease;
+  }
+
+  body.dark .question-block h3 {
+    color: var(--yellow);
+  }
+
+  input[type="text"], select {
+    padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .buttons a, .buttons button {
+    text-decoration: none;
+    padding: 14px 24px;
+    background-color: #4364F7;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .buttons a:hover, .buttons button:hover {
+    background-color: #003EAA;
+  }
+
+  .progress-bar {
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .progress-bar-inner {
+    height: 16px;
+    width: 0%;
+    background-color: var(--primary);
+    transition: width 0.4s ease;
+  }
+
+  .progress-percent {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #fff;
+    line-height: 16px;
+  }
+
+  .feedback {
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  .correct {
+    color: green;
+  }
+
+  .incorrect {
+    color: red;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    background-color: #e3e8f0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  body.dark {
+    background-color: #1e1e1e;
+    color: #f2f2f2;
+  }
+
+  body.dark nav {
+    background-color: #222;
+  }
+
+  body.dark .nav-links a {
+    color: var(--yellow);
+  }
+
+  body.dark header {
+    background: linear-gradient(135deg, #2a2a2a, #444);
+    color: var(--yellow);
+  }
+
+  body.dark .question-block {
+    background-color: #2b2b2b;
+    color: #f2f2f2;
+  }
+
+  body.dark input[type="text"], body.dark select {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+  }
+
+  body.dark .buttons a, body.dark .buttons button {
+    background-color: var(--yellow);
+    color: #222;
+  }
+
+  body.dark .buttons a:hover, body.dark .buttons button:hover {
+    background-color: #e2b93b;
+  }
+
+  body.dark .progress-bar-inner {
+    background-color: var(--yellow);
+  }
+
+  body.dark .progress-percent {
+    color: #000;
+  }
+
+  body.dark footer {
+    background-color: #222;
+    color: #aaa;
+  }
