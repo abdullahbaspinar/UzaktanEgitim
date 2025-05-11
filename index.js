@@ -28,29 +28,54 @@ const firebaseConfig = {
   });
   
   // Buzkıran popup
-  function submitIcebreaker() {
-    const input = document.getElementById('icebreakerInput');
-    const answer = input.value.trim();
-    if (!answer) return alert('Lütfen cevabınızı yazın.');
-  
-    localStorage.setItem('icebreakerSubmitted', 'true');
-    const timestamp = Date.now();
-  
-    if (typeof firebase !== 'undefined') {
-      firebase.database().ref('icebreakers').push({ answer, timestamp });
-    }
-  
-    document.getElementById('icebreakerModal').style.display = 'none';
-    alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
+  // Firebase Config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Show last answer when the page loads
+window.onload = function() {
+  const modal = document.getElementById('icebreakerModal');
+  modal.style.display = 'flex';
+
+  db.ref('icebreaker/lastAnswer').once('value')
+    .then(snapshot => {
+      const lastAnswer = snapshot.val();
+      document.getElementById('previousAnswer').innerText = lastAnswer 
+        ? `Bir önceki kişi şöyle cevapladı: "${lastAnswer}"`
+        : "Bu oyunu oynayan ilk kişisin!";
+    });
+};
+
+// Submit answer
+function submitIcebreaker() {
+  const answer = document.getElementById('icebreakerInput').value.trim();
+  if (!answer) {
+    alert("Lütfen bir cevap yazınız.");
+    return;
   }
-  
-  window.addEventListener('DOMContentLoaded', () => {
-    if (!localStorage.getItem('icebreakerSubmitted')) {
-      document.getElementById('icebreakerModal').style.display = 'flex';
-    } else {
-      document.getElementById('icebreakerModal').style.display = 'none';
-    }
-  });
+
+  // Save to 'answers' list
+  const newAnswerRef = db.ref('icebreaker/answers').push();
+  newAnswerRef.set(answer);
+
+  // Update last answer reference
+  db.ref('icebreaker/lastAnswer').set(answer);
+
+  // Close modal
+  document.getElementById('icebreakerModal').style.display = 'none';
+}
+
   
   // Mailto
   function sendMail(event) {
