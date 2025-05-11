@@ -1,4 +1,3 @@
-// ✅ Firebase ayarları
 const firebaseConfig = {
   apiKey: "AIzaSyBLXLtI9N3iT94bpDXGcxqgNk67xEWU6nU",
   authDomain: "uzaktanegitim-forum.firebaseapp.com",
@@ -11,7 +10,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ✅ Tema Değiştirici
 const themeToggle = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('theme');
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -28,7 +26,6 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// ✅ Buzkıran Pop-up İşlevleri
 window.onload = function() {
   const modal = document.getElementById('icebreakerModal');
   modal.style.display = 'flex';
@@ -56,7 +53,6 @@ function submitIcebreaker() {
   document.getElementById('icebreakerModal').style.display = 'none';
 }
 
-// ✅ Mailto İşlevi
 function sendMail(event) {
   event.preventDefault();
   const name = encodeURIComponent(document.getElementById('name').value);

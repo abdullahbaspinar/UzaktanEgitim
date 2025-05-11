@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buzkıran Cevapları</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .answer-list {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .answer {
-      border-bottom: 1px solid #eee;
-      padding: 10px 0;
-    }
-    .answer:last-child {
-      border-bottom: none;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buzkıran Cevapları | Almanca Platformu</title>
+  <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 </head>
 <body>
-  <h1>🚀 Buzkıran Etkinliği Cevapları</h1>
-  <div class="answer-list" id="answerList">
-    <p>Yükleniyor...</p>
+  <nav>
+  <a href="index.html" class="nav-brand">Almanca Platformu</a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">☰</button>
+  <div class="nav-links">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="index.html#units">Üniteler</a>
+    <a href="index.html#about">Hakkımızda</a>
+    <a href="index.html#contact">İletişim</a>
+    <a href="Forum/forum.html">Forum</a>
+    <a href="icebraker.html">Buzkıran Cevapları</a>
   </div>
+  <button id="themeToggle" aria-label="Tema Değiştir">🌙</button>
+</nav>
+
+
+  <header>
+    <h1>🚀 Buzkıran Etkinliği Cevapları</h1>
+    <p>Katılımcıların verdiği tüm cevaplar burada listelenmektedir.</p>
+  </header>
+
+  <section class="container" id="answers">
+    <div id="answerList">
+      <p>Yükleniyor...</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Almanca Uzaktan Eğitim Platformu. Tüm hakları saklıdır.
+  </footer>
 
   <script>
     const firebaseConfig = {
@@ -53,6 +53,22 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.body.classList.add('dark');
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
     const answerList = document.getElementById('answerList');
     db.ref('icebreaker/answers').once('value')
       .then(snapshot => {
@@ -61,7 +77,8 @@
         if (data) {
           Object.values(data).forEach(answer => {
             const div = document.createElement('div');
-            div.className = 'answer';
+            div.style.borderBottom = "1px solid #ddd";
+            div.style.padding = "10px 0";
             div.textContent = answer;
             answerList.appendChild(div);
           });
