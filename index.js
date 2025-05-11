@@ -27,18 +27,22 @@ themeToggle.addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('icebreakerModal');
   const isIcebreakerShown = localStorage.getItem('icebreakerShown');
+  if (isIcebreakerShown) return;
 
-  if (!isIcebreakerShown) {
-    db.ref('icebreaker/lastAnswer').once('value').then(snapshot => {
-      const lastAnswer = snapshot.val();
-      document.getElementById('previousAnswer').innerText = lastAnswer
-        ? `Bir önceki kişi şöyle cevapladı: "${lastAnswer}"`
-        : "Bu oyunu oynayan ilk kişisin!";
-      modal.style.display = 'flex';
-    });
-  }
+  db.ref('icebreaker/lastAnswer').once('value').then(snapshot => {
+    const lastAnswer = snapshot.val();
+    const modal = document.getElementById('icebreakerModal');
+    const previousAnswerElement = document.getElementById('previousAnswer');
+
+    if (lastAnswer) {
+      previousAnswerElement.textContent = `Bir önceki kişi şöyle cevapladı: "${lastAnswer}"`;
+    } else {
+      previousAnswerElement.textContent = "Bu oyunu oynayan ilk kişisin!";
+    }
+
+    modal.style.display = 'flex';
+  });
 });
 
 function submitIcebreaker() {
