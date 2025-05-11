@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buzkıran Cevapları</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .answer-list {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .answer {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .answer:last-child {
+      border-bottom: none;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+</head>
+<body>
+  <h1>🚀 Buzkıran Etkinliği Cevapları</h1>
+  <div class="answer-list" id="answerList">
+    <p>Yükleniyor...</p>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBLXLtI9N3iT94bpDXGcxqgNk67xEWU6nU",
+      authDomain: "uzaktanegitim-forum.firebaseapp.com",
+      databaseURL: "https://uzaktanegitim-forum-default-rtdb.firebaseio.com",
+      projectId: "uzaktanegitim-forum",
+      storageBucket: "uzaktanegitim-forum.appspot.com",
+      messagingSenderId: "157485126536",
+      appId: "1:157485126536:web:985d13c464f8373151e03d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const answerList = document.getElementById('answerList');
+    db.ref('icebreaker/answers').once('value')
+      .then(snapshot => {
+        const data = snapshot.val();
+        answerList.innerHTML = '';
+        if (data) {
+          Object.values(data).forEach(answer => {
+            const div = document.createElement('div');
+            div.className = 'answer';
+            div.textContent = answer;
+            answerList.appendChild(div);
+          });
+        } else {
+          answerList.innerHTML = '<p>Henüz cevap yok.</p>';
+        }
+      });
+  </script>
+</body>
+</html>
