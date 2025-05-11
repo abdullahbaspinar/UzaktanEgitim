@@ -26,10 +26,10 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-window.onload = function() {
-  const modal = document.getElementById('icebreakerModal');
-  const isIcebreakerShown = localStorage.getItem('icebreakerShown');
-  if (!isIcebreakerShown) {
+const isIcebreakerShown = localStorage.getItem('icebreakerShown');
+if (!isIcebreakerShown) {
+  window.onload = function() {
+    const modal = document.getElementById('icebreakerModal');
     modal.style.display = 'flex';
     db.ref('icebreaker/lastAnswer').once('value').then(snapshot => {
       const lastAnswer = snapshot.val();
@@ -38,7 +38,7 @@ window.onload = function() {
         : "Bu oyunu oynayan ilk kişisin!";
     });
   }
-};
+}
 
 function submitIcebreaker() {
   const answer = document.getElementById('icebreakerInput').value.trim();
