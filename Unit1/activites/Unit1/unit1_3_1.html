@@ -30,7 +30,7 @@
   <div class="question-block">
     <h3>1. Dinlediğiniz harf hangisidir?</h3>
     <audio controls>
-      <source src="audio/b.mp3" type="audio/mpeg">
+      <source src="audio/B.mp3" type="audio/mpeg">
       Tarayıcınız ses öğesini desteklemiyor.
     </audio>
     <div>
@@ -44,13 +44,40 @@
   <div class="question-block">
     <h3>2. Dinlediğiniz harf hangisidir?</h3>
     <audio controls>
-      <source src="audio/f.mp3" type="audio/mpeg">
+      <source src="audio/K.mp3" type="audio/mpeg">
       Tarayıcınız ses öğesini desteklemiyor.
     </audio>
     <div>
       <label><input type="radio" name="q2" value="S"> S</label><br>
-      <label><input type="radio" name="q2" value="F"> F</label><br>
+      <label><input type="radio" name="q2" value="K"> K</label><br>
       <label><input type="radio" name="q2" value="V"> V</label>
+    </div>
+    <div class="feedback" id="feedback-1"></div>
+  </div>
+   <div class="question-block">
+    <h3>2. Dinlediğiniz harf hangisidir?</h3>
+    <audio controls>
+      <source src="audio/U.mp3" type="audio/mpeg">
+      Tarayıcınız ses öğesini desteklemiyor.
+    </audio>
+    <div>
+      <label><input type="radio" name="q2" value="U"> U</label><br>
+      <label><input type="radio" name="q2" value="K"> K</label><br>
+      <label><input type="radio" name="q2" value="Z"> Z</label>
+    </div>
+    <div class="feedback" id="feedback-1"></div>
+  </div>
+
+     <div class="question-block">
+    <h3>2. Dinlediğiniz harf hangisidir?</h3>
+    <audio controls>
+      <source src="audio/U.mp3" type="audio/mpeg">
+      Tarayıcınız ses öğesini desteklemiyor.
+    </audio>
+    <div>
+      <label><input type="radio" name="q2" value="B"> B</label><br>
+      <label><input type="radio" name="q2" value="U"> U</label><br>
+      <label><input type="radio" name="q2" value="Z"> Z</label>
     </div>
     <div class="feedback" id="feedback-1"></div>
   </div>
@@ -68,7 +95,7 @@
 
 <script>
   function checkSoundAnswers() {
-    const correctAnswers = ['B', 'F'];
+    const correctAnswers = ['B', 'K', 'U', 'Z'];
     correctAnswers.forEach((correct, index) => {
       const selected = document.querySelector(`input[name='q${index + 1}']:checked`);
       const feedback = document.getElementById(`feedback-${index}`);
