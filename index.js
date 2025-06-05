@@ -1,7 +1,7 @@
 const onboardingSteps = [
   {
     selector: ".nav-brand",
-    text: "Bu logoya tıklayarak her zaman ana sayfaya dönebilirsin."
+    text: "Bu logoya tıklayarak ana sayfaya dönebilirsin."
   },
   {
     selector: ".nav-links a:nth-child(2)",
@@ -13,83 +13,96 @@ const onboardingSteps = [
   },
   {
     selector: ".nav-links a:nth-child(4)",
-    text: "Görüşlerini iletmek için iletişim formuna buradan erişebilirsin."
+    text: "Görüş ve önerilerini buradan bize iletebilirsin."
   },
   {
     selector: ".nav-links a:nth-child(5)",
-    text: "Forum sayfasından toplulukla iletişime geçebilirsin."
+    text: "Forum alanında diğer kullanıcılarla etkileşebilirsin."
   },
   {
     selector: ".nav-links a:nth-child(6)",
-    text: "Buzkıran cevaplarını burada görebilirsin."
+    text: "Topluluğun verdiği buzkıran cevaplarına buradan ulaşabilirsin."
   },
   {
     selector: "#themeToggle",
-    text: "Tema tuşuyla koyu/açık mod arasında geçiş yapabilirsin."
+    text: "Tema tuşuyla açık ve koyu mod arasında geçiş yapabilirsin."
   },
   {
     selector: "#units",
-    text: "Buradan ünite kartlarına ulaşarak Almanca öğrenmeye başlayabilirsin."
+    text: "Almanca derslerine buradaki ünite kartlarından başlayabilirsin."
   },
   {
     selector: "#contact",
-    text: "Buradaki form üzerinden bize mesaj bırakabilirsin."
+    text: "Bize mesaj göndermek istersen bu formu doldurabilirsin."
   },
   {
-    selector: "#chatbotButton", // senin chatbot'un varsa ID'si burada olmalı
-    text: "Soruların mı var? Chatbot sana anında yardımcı olabilir."
+    selector: "#chatbotButton", // chatbot butonunun id'si
+    text: "Chatbot sana sorularında yardımcı olabilir."
   }
 ];
 
-let currentOnboardingStep = 0;
+let currentStep = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const hasSeen = localStorage.getItem("hasSeenOnboarding");
-  if (!hasSeen) {
+  if (!localStorage.getItem("hasSeenOnboarding")) {
     disablePageInteraction();
     showOnboardingStep();
   }
 });
 
 function showOnboardingStep() {
-  const step = onboardingSteps[currentOnboardingStep];
+  const step = onboardingSteps[currentStep];
   const target = document.querySelector(step.selector);
+  const tooltip = document.getElementById("onboardingTooltip");
+  const tooltipBox = document.getElementById("tooltipBox");
   const overlay = document.getElementById("onboardingOverlay");
-  const text = document.getElementById("onboardingText");
+  const text = document.getElementById("tooltipText");
 
-  if (!target) return;
+  if (!target || !tooltipBox || !tooltip || !overlay) return;
+
+  removeHighlights();
+  target.classList.add("highlighted");
 
   const rect = target.getBoundingClientRect();
+  const tooltipRect = tooltipBox.getBoundingClientRect();
+
+  const top = rect.top + window.scrollY - tooltipRect.height - 20;
+  const left = rect.left + window.scrollX;
+
+  tooltip.style.top = `${Math.max(top, 10)}px`;
+  tooltip.style.left = `${Math.min(left, window.innerWidth - tooltipRect.width - 10)}px`;
+
   overlay.classList.remove("hidden");
+  tooltip.classList.remove("hidden");
+
   text.innerText = step.text;
 
-  scrollToElement(target);
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function nextStep() {
-  currentOnboardingStep++;
-  if (currentOnboardingStep < onboardingSteps.length) {
+  currentStep++;
+  if (currentStep < onboardingSteps.length) {
     showOnboardingStep();
   } else {
     endOnboarding();
   }
 }
 
-function scrollToElement(el) {
-  el.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
 function endOnboarding() {
   document.getElementById("onboardingOverlay").classList.add("hidden");
+  document.getElementById("onboardingTooltip").classList.add("hidden");
+  removeHighlights();
   localStorage.setItem("hasSeenOnboarding", "true");
   enablePageInteraction();
 }
 
-// Sayfa etkileşimini kilitleyen/kaldıran fonksiyonlar
 function disablePageInteraction() {
   document.body.style.overflow = 'hidden';
   document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-    el.setAttribute('disabled', 'true');
+    if (!el.closest('#onboardingTooltip')) {
+      el.setAttribute('disabled', 'true');
+    }
   });
 }
 
@@ -97,6 +110,12 @@ function enablePageInteraction() {
   document.body.style.overflow = '';
   document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
     el.removeAttribute('disabled');
+  });
+}
+
+function removeHighlights() {
+  document.querySelectorAll('.highlighted').forEach(el => {
+    el.classList.remove('highlighted');
   });
 }
 
