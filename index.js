@@ -1,4 +1,4 @@
-// Firebase ayarları
+// Firebase yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyBLXLtI9N3iT94bpDXGcxqgNk67xEWU6nU",
   authDomain: "uzaktanegitim-forum.firebaseapp.com",
@@ -27,89 +27,7 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// Buzkıran cevabı
-function loadPreviousAnswer() {
-  const ref = firebase.database().ref('icebreakers').limitToLast(1);
-  ref.once('value', (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      const lastKey = Object.keys(data)[0];
-      const lastAnswer = data[lastKey].answer;
-      document.getElementById('previousAnswer').textContent = `Önceki katılımcının cevabı: "${lastAnswer}"`;
-    } else {
-      document.getElementById('previousAnswer').textContent = 'Henüz kimse cevaplamamış.';
-    }
-  });
-}
-
-// Buzkıran gönderimi
-function submitIcebreaker() {
-  const input = document.getElementById('icebreakerInput');
-  const answer = input.value.trim();
-  if (!answer) {
-    alert('Lütfen cevabınızı yazın.');
-    return;
-  }
-
-  localStorage.setItem('icebreakerSubmitted', 'true');
-  const timestamp = Date.now();
-  firebase.database().ref('icebreakers').push({ answer, timestamp });
-
-  document.getElementById('icebreakerModal').style.display = 'none';
-  alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
-}
-
-// Sayfa yüklenince başlat
-window.addEventListener('DOMContentLoaded', () => {
-  if (!localStorage.getItem('icebreakerSubmitted')) {
-    document.getElementById('icebreakerModal').style.display = 'flex';
-    loadPreviousAnswer();
-  } else {
-    document.getElementById('icebreakerModal').style.display = 'none';
-    if (!localStorage.getItem('hasSeenOnboarding')) {
-      disablePageInteraction();
-      showOnboardingStep();
-    }
-  }
-});
-
-// Mail gönderimi
-function sendMail(event) {
-  event.preventDefault();
-  const name = encodeURIComponent(document.getElementById('name').value);
-  const email = encodeURIComponent(document.getElementById('email').value);
-  const message = encodeURIComponent(document.getElementById('message').value);
-  const subject = encodeURIComponent("Görüş & Öneri");
-  const body = `Ad: ${name}%0AE-posta: ${email}%0AMesaj:%0A${message}`;
-  window.location.href = `mailto:aabdullahbaspinarr@gmail.com?subject=${subject}&body=${body}`;
-}
-
-// Chatbot
-(function () {
-  if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-    window.chatbase = (...args) => {
-      if (!window.chatbase.q) window.chatbase.q = [];
-      window.chatbase.q.push(args);
-    };
-    window.chatbase = new Proxy(window.chatbase, {
-      get(target, prop) {
-        if (prop === "q") return target.q;
-        return (...args) => target(prop, ...args);
-      }
-    });
-  }
-  const onLoad = function () {
-    const script = document.createElement("script");
-    script.src = "https://www.chatbase.co/embed.min.js";
-    script.id = "fmGhmZopdiKau9QTCrAFx";
-    script.domain = "www.chatbase.co";
-    document.body.appendChild(script);
-  };
-  if (document.readyState === "complete") onLoad();
-  else window.addEventListener("load", onLoad);
-})();
-
-// ONBOARDING – Sıralı tanıtım adımları
+// Onboarding adımları
 const onboardingSteps = [
   {
     selector: "body",
@@ -151,7 +69,6 @@ const onboardingSteps = [
   }
 ];
 
-
 let currentStep = 0;
 
 function showOnboardingStep() {
@@ -170,7 +87,7 @@ function showOnboardingStep() {
 
   const nextButton = tooltipBox.querySelector("button");
 
-  // Hoş geldin (ortalanmış sabit pozisyon)
+  // Hoş geldin mesajı
   if (step.isIntro) {
     text.innerText = step.text;
     tooltip.style.position = "fixed";
@@ -194,7 +111,7 @@ function showOnboardingStep() {
       tooltip.classList.add("hidden");
       overlay.classList.add("hidden");
       localStorage.setItem("hasSeenOnboarding", "true");
-      enablePageInteraction();
+      removeHighlights();
     };
     return;
   }
@@ -228,45 +145,41 @@ function showOnboardingStep() {
 
   nextButton.textContent = "İleri";
   nextButton.onclick = nextStep;
+
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
 }
-
-
 
 function nextStep() {
   currentStep++;
   if (currentStep < onboardingSteps.length) {
     showOnboardingStep();
-  } else {
-    endOnboarding();
   }
 }
 
-function endOnboarding() {
-  document.getElementById("onboardingOverlay").classList.add("hidden");
-  document.getElementById("onboardingTooltip").classList.add("hidden");
-  removeHighlights();
-  localStorage.setItem("hasSeenOnboarding", "true");
-  enablePageInteraction();
-}
-
-function disablePageInteraction() {
-  document.body.style.overflow = 'hidden';
-  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-    if (!el.closest('#tooltipBox')) {
-      el.setAttribute('disabled', 'true');
-    }
-  });
-}
-
-function enablePageInteraction() {
-  document.body.style.overflow = '';
-  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-    el.removeAttribute('disabled');
-  });
-}
-
 function removeHighlights() {
-  document.querySelectorAll('.highlighted').forEach(el => {
-    el.classList.remove('highlighted');
+  document.querySelectorAll(".highlighted").forEach(el => {
+    el.classList.remove("highlighted");
   });
 }
+
+// Sayfa yüklenince onboarding başlat
+window.addEventListener("DOMContentLoaded", () => {
+  if (!localStorage.getItem("hasSeenOnboarding")) {
+    setTimeout(showOnboardingStep, 500);
+  }
+});
+
+// Chatbase botu yükle
+(function () {
+  if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+    window.chatbase = (...args) => {
+      if (!window.chatbase.q) window.chatbase.q = [];
+      window.chatbase.q.push(args);
+    };
+    const script = document.createElement("script");
+    script.src = "https://www.chatbase.co/embed.min.js";
+    script.id = "fmGhmZopdiKau9QTCrAFx";
+    script.setAttribute("chatbase", "chatbase");
+    document.body.appendChild(script);
+  }
+})();
