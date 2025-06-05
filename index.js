@@ -137,29 +137,44 @@ function showOnboardingStep() {
   removeHighlights();
   tooltip.classList.remove("hidden");
   overlay.classList.remove("hidden");
-  text.innerText = step.text;
 
   const nextButton = tooltipBox.querySelector("button");
 
-  if (step.isFinal) {
-    nextButton.textContent = "Başla";
-    nextButton.onclick = endOnboarding;
+  // Hoş geldin ekranı (merkezde sabit)
+  if (step.isIntro) {
+    text.innerText = step.text;
+    tooltip.style.position = "fixed";
     tooltip.style.top = "50%";
     tooltip.style.left = "50%";
     tooltip.style.transform = "translate(-50%, -50%)";
-    return;
-  }
-
-  if (step.isIntro) {
     nextButton.textContent = "İleri";
     nextButton.onclick = nextStep;
-    tooltip.style.top = "50%";
-    tooltip.style.left = "50%";
-    tooltip.style.transform = "translate(-50%, -50%)";
     return;
   }
 
-  // Normal adımlar
+  // Final adımı (başla butonu)
+  if (step.isFinal) {
+    text.innerText = step.text;
+    tooltip.style.position = "fixed";
+    tooltip.style.top = "50%";
+    tooltip.style.left = "50%";
+    tooltip.style.transform = "translate(-50%, -50%)";
+    nextButton.textContent = "Başla";
+    nextButton.onclick = () => {
+      tooltip.classList.add("hidden");
+      overlay.classList.add("hidden");
+      localStorage.setItem("hasSeenOnboarding", "true");
+      enablePageInteraction();
+    };
+    return;
+  }
+
+  // Standart adımlar
+  if (!target) return;
+
+  target.classList.add("highlighted");
+  text.innerText = step.text;
+
   const rect = target.getBoundingClientRect();
   const spacing = 12;
   const tooltipHeight = tooltipBox.offsetHeight;
@@ -177,14 +192,15 @@ function showOnboardingStep() {
   }
   if (left < 0) left = 10;
 
+  tooltip.style.position = "absolute";
   tooltip.style.top = `${top + window.scrollY}px`;
   tooltip.style.left = `${left + window.scrollX}px`;
   tooltip.style.transform = "none";
 
-  target.classList.add("highlighted");
   nextButton.textContent = "İleri";
   nextButton.onclick = nextStep;
 }
+
 
 function nextStep() {
   currentStep++;
