@@ -100,14 +100,13 @@ function sendMail(event) {
   else{ window.addEventListener("load", onLoad) }
 })();
 
-// ONBOARDING TURU
+// ONBOARDING TURU (Logo ve İletişim kaldırıldı)
 
 const onboardingSteps = [
   { selector: ".nav-links a:nth-child(2)", text: "Ünite bağlantılarına buradan ulaşabilirsin." },
   { selector: ".nav-links a:nth-child(3)", text: "Proje hakkında bilgi için burayı ziyaret et." },
-  { selector: ".nav-links a:nth-child(4)", text: "Bize ulaşmak için iletişim bölümüne tıkla." },
-  { selector: ".nav-links a:nth-child(5)", text: "Forum bölümünde toplulukla iletişime geçebilirsin." },
-  { selector: ".nav-links a:nth-child(6)", text: "Buzkıran cevaplarını buradan görebilirsin." },
+  { selector: ".nav-links a:nth-child(4)", text: "Forum bölümünde toplulukla iletişime geçebilirsin." },
+  { selector: ".nav-links a:nth-child(5)", text: "Buzkıran cevaplarını buradan görebilirsin." },
   { selector: "#themeToggle", text: "Tema tuşuyla koyu/açık moda geçiş yapabilirsin." },
   { selector: "#units", text: "Burada Almanca ünite kartlarını bulabilirsin." },
   { selector: "#chatbotButton", text: "Soruların için chatbot burada yardımcı olur." }
