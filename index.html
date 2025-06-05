@@ -25,12 +25,6 @@
 </nav>
 
 
-<div id="tourTooltip" class="hidden">
-  <div class="tooltip-box">
-    <p id="tooltipText"></p>
-    <button onclick="nextStep()">İleri</button>
-  </div>
-</div>
 
 
   <header>
@@ -87,5 +81,15 @@
   </footer>
 
   <script src="index.js"></script>
+
+  <div id="onboardingOverlay" class="hidden">
+  <div id="onboardingTooltip">
+    <p id="onboardingText"></p>
+    <div class="onboarding-buttons">
+      <button onclick="nextStep()">İleri</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

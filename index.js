@@ -1,82 +1,103 @@
-const tourSteps = [
+const onboardingSteps = [
   {
     selector: ".nav-brand",
     text: "Bu logoya tıklayarak her zaman ana sayfaya dönebilirsin."
   },
   {
-    selector: ".nav-links a:nth-child(1)",
-    text: "Ana Sayfa bağlantısı – buradan platforma genel bakış sağlayabilirsin."
-  },
-  {
     selector: ".nav-links a:nth-child(2)",
-    text: "Üniteler sekmesi – Almanca derslerine buradan erişebilirsin."
+    text: "Buradan Almanca ünitelerine ulaşabilirsin."
   },
   {
     selector: ".nav-links a:nth-child(3)",
-    text: "Hakkımızda – Projenin amacı ve arkasındaki ekip burada anlatılıyor."
+    text: "Proje hakkında bilgi almak için bu bölümü ziyaret et."
   },
   {
     selector: ".nav-links a:nth-child(4)",
-    text: "İletişim – Bize mesaj bırakmak istersen bu bölümü kullanabilirsin."
+    text: "Görüşlerini iletmek için iletişim formuna buradan erişebilirsin."
   },
   {
     selector: ".nav-links a:nth-child(5)",
-    text: "Forum – Diğer kullanıcılarla etkileşime geçebileceğin alan."
+    text: "Forum sayfasından toplulukla iletişime geçebilirsin."
   },
   {
     selector: ".nav-links a:nth-child(6)",
-    text: "Buzkıran Cevapları – Topluluğun verdiği eğlenceli yanıtları buradan görebilirsin."
+    text: "Buzkıran cevaplarını burada görebilirsin."
   },
   {
     selector: "#themeToggle",
-    text: "🌙 Tema Değiştir – Aydınlık ve karanlık mod arasında geçiş yapar."
+    text: "Tema tuşuyla koyu/açık mod arasında geçiş yapabilirsin."
+  },
+  {
+    selector: "#units",
+    text: "Buradan ünite kartlarına ulaşarak Almanca öğrenmeye başlayabilirsin."
+  },
+  {
+    selector: "#contact",
+    text: "Buradaki form üzerinden bize mesaj bırakabilirsin."
+  },
+  {
+    selector: "#chatbotButton", // senin chatbot'un varsa ID'si burada olmalı
+    text: "Soruların mı var? Chatbot sana anında yardımcı olabilir."
   }
 ];
 
-let currentStep = 0;
+let currentOnboardingStep = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (!localStorage.getItem("hasSeenTour")) {
-    startTour();
+  const hasSeen = localStorage.getItem("hasSeenOnboarding");
+  if (!hasSeen) {
+    disablePageInteraction();
+    showOnboardingStep();
   }
 });
 
-function startTour() {
-  currentStep = 0;
-  showStep();
-}
+function showOnboardingStep() {
+  const step = onboardingSteps[currentOnboardingStep];
+  const target = document.querySelector(step.selector);
+  const overlay = document.getElementById("onboardingOverlay");
+  const text = document.getElementById("onboardingText");
 
-function showStep() {
-  const step = tourSteps[currentStep];
-  const element = document.querySelector(step.selector);
-  const tooltip = document.getElementById("tourTooltip");
-  const text = document.getElementById("tooltipText");
+  if (!target) return;
 
-  if (!element) return;
-
-  const rect = element.getBoundingClientRect();
-
-  tooltip.classList.remove("hidden");
-  tooltip.style.top = `${rect.bottom + window.scrollY + 10}px`;
-  tooltip.style.left = `${rect.left + window.scrollX}px`;
-
+  const rect = target.getBoundingClientRect();
+  overlay.classList.remove("hidden");
   text.innerText = step.text;
 
-  element.scrollIntoView({ behavior: "smooth", block: "center" });
+  scrollToElement(target);
 }
 
 function nextStep() {
-  currentStep++;
-  if (currentStep < tourSteps.length) {
-    showStep();
+  currentOnboardingStep++;
+  if (currentOnboardingStep < onboardingSteps.length) {
+    showOnboardingStep();
   } else {
-    endTour();
+    endOnboarding();
   }
 }
 
-function endTour() {
-  document.getElementById("tourTooltip").classList.add("hidden");
-  localStorage.setItem("hasSeenTour", "true");
+function scrollToElement(el) {
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function endOnboarding() {
+  document.getElementById("onboardingOverlay").classList.add("hidden");
+  localStorage.setItem("hasSeenOnboarding", "true");
+  enablePageInteraction();
+}
+
+// Sayfa etkileşimini kilitleyen/kaldıran fonksiyonlar
+function disablePageInteraction() {
+  document.body.style.overflow = 'hidden';
+  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
+    el.setAttribute('disabled', 'true');
+  });
+}
+
+function enablePageInteraction() {
+  document.body.style.overflow = '';
+  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
+    el.removeAttribute('disabled');
+  });
 }
 
 // Firebase ayarları
