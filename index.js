@@ -139,9 +139,10 @@ function showOnboardingStep() {
   const tooltipHeight = tooltipBox.offsetHeight;
   const tooltipWidth = tooltipBox.offsetWidth;
 
-  let top = rect.bottom + spacing;
-  let left = rect.left;
+  let top = rect.top + rect.height + spacing;
+  let left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
 
+  // Ekrandan taşmaması için sınırla
   if (top + tooltipHeight > window.innerHeight) {
     top = rect.top - tooltipHeight - spacing;
   }
@@ -156,10 +157,12 @@ function showOnboardingStep() {
 
   overlay.classList.remove("hidden");
   tooltip.classList.remove("hidden");
+
   text.innerText = step.text;
 
   target.scrollIntoView({ behavior: "smooth", block: "center" });
 }
+
 
 function nextStep() {
   currentStep++;
