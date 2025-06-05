@@ -27,7 +27,7 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// Buzkıran cevabı yükleme
+// Buzkıran cevabı
 function loadPreviousAnswer() {
   const ref = firebase.database().ref('icebreakers').limitToLast(1);
   ref.once('value', (snapshot) => {
@@ -42,7 +42,6 @@ function loadPreviousAnswer() {
   });
 }
 
-// Buzkıran gönderimi
 function submitIcebreaker() {
   const input = document.getElementById('icebreakerInput');
   const answer = input.value.trim();
@@ -53,30 +52,25 @@ function submitIcebreaker() {
 
   localStorage.setItem('icebreakerSubmitted', 'true');
   const timestamp = Date.now();
-
   firebase.database().ref('icebreakers').push({ answer, timestamp });
 
   document.getElementById('icebreakerModal').style.display = 'none';
   alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
 }
 
-// Sayfa yüklenince buzkıran kontrolü
 window.addEventListener('DOMContentLoaded', () => {
   if (!localStorage.getItem('icebreakerSubmitted')) {
     document.getElementById('icebreakerModal').style.display = 'flex';
     loadPreviousAnswer();
   } else {
     document.getElementById('icebreakerModal').style.display = 'none';
-  }
-
-  // Onboarding başlat
-  if (!localStorage.getItem('hasSeenOnboarding') && localStorage.getItem('icebreakerSubmitted') === 'true') {
-    disablePageInteraction();
-    showOnboardingStep();
+    if (!localStorage.getItem('hasSeenOnboarding')) {
+      disablePageInteraction();
+      showOnboardingStep();
+    }
   }
 });
 
-// Mailto gönderimi
 function sendMail(event) {
   event.preventDefault();
   const name = encodeURIComponent(document.getElementById('name').value);
@@ -87,7 +81,7 @@ function sendMail(event) {
   window.location.href = `mailto:aabdullahbaspinarr@gmail.com?subject=${subject}&body=${body}`;
 }
 
-// Chatbot (Chatbase)
+// Chatbot
 (function () {
   if (!window.chatbase || window.chatbase("getState") !== "initialized") {
     window.chatbase = (...args) => {
@@ -112,15 +106,16 @@ function sendMail(event) {
   else window.addEventListener("load", onLoad);
 })();
 
-// ONBOARDING TURU - sıra ve içerik net
+// 🧭 ONBOARDING SIRASI: Hoş geldin → Üniteler → Hakkımızda → İletişim → Forum → Tema → Üniteler → Chatbot
 const onboardingSteps = [
-  { selector: ".nav-links a:nth-child(1)", text: "Buradan her zaman ana sayfaya dönebilirsin." },
-  { selector: ".nav-links a:nth-child(2)", text: "Üniteler sekmesi: Almanca ders içeriklerine ulaşabilirsin." },
+  { selector: "body", text: "👋 Hoş geldin! Sana bu platformu kısaca tanıtalım.", isIntro: true },
+  { selector: ".nav-links a:nth-child(2)", text: "Buradan Almanca ünitelerine ulaşabilirsin." },
   { selector: ".nav-links a:nth-child(3)", text: "Proje hakkında bilgi almak için burayı ziyaret et." },
-  { selector: ".nav-links a:nth-child(4)", text: "Forum alanında diğer kullanıcılarla iletişim kurabilirsin." },
-  { selector: "#themeToggle", text: "Tema tuşuyla açık/koyu mod arasında geçiş yapabilirsin." },
-  { selector: "#units", text: "Burada tüm Almanca ünitelerine ulaşabilirsin. Her kart seni derse götürür." },
-  { selector: "#chatbotButton", text: "Soruların mı var? Chatbot her zaman yardım etmeye hazır!" }
+  { selector: ".nav-links a:nth-child(4)", text: "Bize ulaşmak istersen iletişim bölümünü kullanabilirsin." },
+  { selector: ".nav-links a:nth-child(5)", text: "Forum sayfasında toplulukla etkileşime geçebilirsin." },
+  { selector: "#themeToggle", text: "🌗 Tema değiştirici sayesinde açık/koyu modlar arasında geçiş yapabilirsin." },
+  { selector: "#units", text: "Ünite kartlarına buradan ulaşabilir, öğrenmeye başlayabilirsin." },
+  { selector: "#chatbotButton", text: "❓ Soruların mı var? Chatbot sana yardımcı olur!" }
 ];
 
 let currentStep = 0;
@@ -136,7 +131,7 @@ function showOnboardingStep() {
   if (!target || !tooltipBox || !tooltip || !overlay) return;
 
   removeHighlights();
-  target.classList.add("highlighted");
+  if (!step.isIntro) target.classList.add("highlighted");
 
   const rect = target.getBoundingClientRect();
   const spacing = 12;
