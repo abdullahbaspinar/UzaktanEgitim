@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const hasSeenGuide = localStorage.getItem("hasSeenGuide");
+
+  if (!hasSeenGuide) {
+    document.getElementById("guideModal").style.display = "flex";
+  }
+});
+
+function closeGuide() {
+  document.getElementById("guideModal").style.display = "none";
+  localStorage.setItem("hasSeenGuide", "true");
+}
+
 // Firebase ayarları
 const firebaseConfig = {
   apiKey: "AIzaSyBLXLtI9N3iT94bpDXGcxqgNk67xEWU6nU",
