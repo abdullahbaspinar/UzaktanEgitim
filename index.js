@@ -27,21 +27,19 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// Önceki buzkıran cevabını yükle
+// Buzkıran cevabı yükleme
 function loadPreviousAnswer() {
-  if (typeof firebase !== 'undefined') {
-    const ref = firebase.database().ref('icebreakers').limitToLast(1);
-    ref.once('value', (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const lastKey = Object.keys(data)[0];
-        const lastAnswer = data[lastKey].answer;
-        document.getElementById('previousAnswer').textContent = `Önceki katılımcının cevabı: "${lastAnswer}"`;
-      } else {
-        document.getElementById('previousAnswer').textContent = 'Henüz kimse cevaplamamış.';
-      }
-    });
-  }
+  const ref = firebase.database().ref('icebreakers').limitToLast(1);
+  ref.once('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const lastKey = Object.keys(data)[0];
+      const lastAnswer = data[lastKey].answer;
+      document.getElementById('previousAnswer').textContent = `Önceki katılımcının cevabı: "${lastAnswer}"`;
+    } else {
+      document.getElementById('previousAnswer').textContent = 'Henüz kimse cevaplamamış.';
+    }
+  });
 }
 
 // Buzkıran gönderimi
@@ -56,15 +54,29 @@ function submitIcebreaker() {
   localStorage.setItem('icebreakerSubmitted', 'true');
   const timestamp = Date.now();
 
-  if (typeof firebase !== 'undefined') {
-    firebase.database().ref('icebreakers').push({ answer, timestamp });
-  }
+  firebase.database().ref('icebreakers').push({ answer, timestamp });
 
   document.getElementById('icebreakerModal').style.display = 'none';
   alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
 }
 
-// Mailto formu
+// Sayfa yüklenince buzkıran kontrolü
+window.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('icebreakerSubmitted')) {
+    document.getElementById('icebreakerModal').style.display = 'flex';
+    loadPreviousAnswer();
+  } else {
+    document.getElementById('icebreakerModal').style.display = 'none';
+  }
+
+  // Onboarding başlat
+  if (!localStorage.getItem('hasSeenOnboarding') && localStorage.getItem('icebreakerSubmitted') === 'true') {
+    disablePageInteraction();
+    showOnboardingStep();
+  }
+});
+
+// Mailto gönderimi
 function sendMail(event) {
   event.preventDefault();
   const name = encodeURIComponent(document.getElementById('name').value);
@@ -75,51 +87,43 @@ function sendMail(event) {
   window.location.href = `mailto:aabdullahbaspinarr@gmail.com?subject=${subject}&body=${body}`;
 }
 
-// Chatbot yükleyici
-(function(){
-  if(!window.chatbase || window.chatbase("getState") !== "initialized"){
-    window.chatbase=(...arguments)=>{
-      if(!window.chatbase.q){ window.chatbase.q=[] }
-      window.chatbase.q.push(arguments)
+// Chatbot (Chatbase)
+(function () {
+  if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+    window.chatbase = (...args) => {
+      if (!window.chatbase.q) window.chatbase.q = [];
+      window.chatbase.q.push(args);
     };
-    window.chatbase=new Proxy(window.chatbase,{
-      get(target, prop){
-        if(prop==="q"){ return target.q }
-        return(...args)=>target(prop,...args)
+    window.chatbase = new Proxy(window.chatbase, {
+      get(target, prop) {
+        if (prop === "q") return target.q;
+        return (...args) => target(prop, ...args);
       }
     });
   }
-  const onLoad=function(){
-    const script=document.createElement("script");
-    script.src="https://www.chatbase.co/embed.min.js";
-    script.id="fmGhmZopdiKau9QTCrAFx";
-    script.domain="www.chatbase.co";
+  const onLoad = function () {
+    const script = document.createElement("script");
+    script.src = "https://www.chatbase.co/embed.min.js";
+    script.id = "fmGhmZopdiKau9QTCrAFx";
+    script.domain = "www.chatbase.co";
     document.body.appendChild(script);
   };
-  if(document.readyState==="complete"){ onLoad() }
-  else{ window.addEventListener("load", onLoad) }
+  if (document.readyState === "complete") onLoad();
+  else window.addEventListener("load", onLoad);
 })();
 
-// ONBOARDING TURU (Logo ve İletişim kaldırıldı)
-
+// ONBOARDING TURU - sıra ve içerik net
 const onboardingSteps = [
-  { selector: ".nav-links a:nth-child(2)", text: "Ünite bağlantılarına buradan ulaşabilirsin." },
-  { selector: ".nav-links a:nth-child(3)", text: "Proje hakkında bilgi için burayı ziyaret et." },
-  { selector: ".nav-links a:nth-child(4)", text: "Forum bölümünde toplulukla iletişime geçebilirsin." },
-  { selector: ".nav-links a:nth-child(5)", text: "Buzkıran cevaplarını buradan görebilirsin." },
-  { selector: "#themeToggle", text: "Tema tuşuyla koyu/açık moda geçiş yapabilirsin." },
-  { selector: "#units", text: "Burada Almanca ünite kartlarını bulabilirsin." },
-  { selector: "#chatbotButton", text: "Soruların için chatbot burada yardımcı olur." }
+  { selector: ".nav-links a:nth-child(1)", text: "Buradan her zaman ana sayfaya dönebilirsin." },
+  { selector: ".nav-links a:nth-child(2)", text: "Üniteler sekmesi: Almanca ders içeriklerine ulaşabilirsin." },
+  { selector: ".nav-links a:nth-child(3)", text: "Proje hakkında bilgi almak için burayı ziyaret et." },
+  { selector: ".nav-links a:nth-child(4)", text: "Forum alanında diğer kullanıcılarla iletişim kurabilirsin." },
+  { selector: "#themeToggle", text: "Tema tuşuyla açık/koyu mod arasında geçiş yapabilirsin." },
+  { selector: "#units", text: "Burada tüm Almanca ünitelerine ulaşabilirsin. Her kart seni derse götürür." },
+  { selector: "#chatbotButton", text: "Soruların mı var? Chatbot her zaman yardım etmeye hazır!" }
 ];
 
 let currentStep = 0;
-
-window.addEventListener("DOMContentLoaded", () => {
-  if (!localStorage.getItem("hasSeenOnboarding") && localStorage.getItem("icebreakerSubmitted") === "true") {
-    disablePageInteraction();
-    showOnboardingStep();
-  }
-});
 
 function showOnboardingStep() {
   const step = onboardingSteps[currentStep];
@@ -139,10 +143,9 @@ function showOnboardingStep() {
   const tooltipHeight = tooltipBox.offsetHeight;
   const tooltipWidth = tooltipBox.offsetWidth;
 
-  let top = rect.top + rect.height + spacing;
+  let top = rect.bottom + spacing;
   let left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
 
-  // Ekrandan taşmaması için sınırla
   if (top + tooltipHeight > window.innerHeight) {
     top = rect.top - tooltipHeight - spacing;
   }
@@ -157,12 +160,10 @@ function showOnboardingStep() {
 
   overlay.classList.remove("hidden");
   tooltip.classList.remove("hidden");
-
   text.innerText = step.text;
 
   target.scrollIntoView({ behavior: "smooth", block: "center" });
 }
-
 
 function nextStep() {
   currentStep++;
