@@ -42,6 +42,7 @@ function loadPreviousAnswer() {
   });
 }
 
+// Buzkıran gönderimi
 function submitIcebreaker() {
   const input = document.getElementById('icebreakerInput');
   const answer = input.value.trim();
@@ -58,6 +59,7 @@ function submitIcebreaker() {
   alert('Teşekkürler! Şimdi platforma başlayabilirsin.');
 }
 
+// Sayfa yüklenince başlat
 window.addEventListener('DOMContentLoaded', () => {
   if (!localStorage.getItem('icebreakerSubmitted')) {
     document.getElementById('icebreakerModal').style.display = 'flex';
@@ -71,6 +73,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Mail gönderimi
 function sendMail(event) {
   event.preventDefault();
   const name = encodeURIComponent(document.getElementById('name').value);
@@ -106,16 +109,17 @@ function sendMail(event) {
   else window.addEventListener("load", onLoad);
 })();
 
-// 🧭 ONBOARDING SIRASI: Hoş geldin → Üniteler → Hakkımızda → İletişim → Forum → Tema → Üniteler → Chatbot
+// ONBOARDING – Sıralı tanıtım adımları
 const onboardingSteps = [
-  { selector: "body", text: "👋 Hoş geldin! Sana bu platformu kısaca tanıtalım.", isIntro: true },
+  { selector: "body", text: "👋 Hoş geldin! Sana bu platformu adım adım tanıtalım.", isIntro: true },
   { selector: ".nav-links a:nth-child(2)", text: "Buradan Almanca ünitelerine ulaşabilirsin." },
   { selector: ".nav-links a:nth-child(3)", text: "Proje hakkında bilgi almak için burayı ziyaret et." },
   { selector: ".nav-links a:nth-child(4)", text: "Bize ulaşmak istersen iletişim bölümünü kullanabilirsin." },
-  { selector: ".nav-links a:nth-child(5)", text: "Forum sayfasında toplulukla etkileşime geçebilirsin." },
-  { selector: "#themeToggle", text: "🌗 Tema değiştirici sayesinde açık/koyu modlar arasında geçiş yapabilirsin." },
-  { selector: "#units", text: "Ünite kartlarına buradan ulaşabilir, öğrenmeye başlayabilirsin." },
-  { selector: "#chatbotButton", text: "❓ Soruların mı var? Chatbot sana yardımcı olur!" }
+  { selector: ".nav-links a:nth-child(5)", text: "Forum sayfasında toplulukla iletişime geçebilirsin." },
+  { selector: "#themeToggle", text: "🌗 Tema değiştiriciyle açık/koyu mod arasında geçiş yapabilirsin." },
+  { selector: "#units", text: "Ünite kartlarına buradan ulaşarak öğrenmeye başlayabilirsin." },
+  { selector: "#chatbotButton", text: "❓ Soruların mı var? Chatbot sana yardımcı olur!" },
+  { selector: "body", text: "✅ Hazırsan şimdi platformu kullanmaya başlayabilirsin!", isFinal: true }
 ];
 
 let currentStep = 0;
@@ -128,11 +132,34 @@ function showOnboardingStep() {
   const overlay = document.getElementById("onboardingOverlay");
   const text = document.getElementById("tooltipText");
 
-  if (!target || !tooltipBox || !tooltip || !overlay) return;
+  if (!tooltip || !tooltipBox || !overlay || !text) return;
 
   removeHighlights();
-  if (!step.isIntro) target.classList.add("highlighted");
+  tooltip.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+  text.innerText = step.text;
 
+  const nextButton = tooltipBox.querySelector("button");
+
+  if (step.isFinal) {
+    nextButton.textContent = "Başla";
+    nextButton.onclick = endOnboarding;
+    tooltip.style.top = "50%";
+    tooltip.style.left = "50%";
+    tooltip.style.transform = "translate(-50%, -50%)";
+    return;
+  }
+
+  if (step.isIntro) {
+    nextButton.textContent = "İleri";
+    nextButton.onclick = nextStep;
+    tooltip.style.top = "50%";
+    tooltip.style.left = "50%";
+    tooltip.style.transform = "translate(-50%, -50%)";
+    return;
+  }
+
+  // Normal adımlar
   const rect = target.getBoundingClientRect();
   const spacing = 12;
   const tooltipHeight = tooltipBox.offsetHeight;
@@ -152,12 +179,11 @@ function showOnboardingStep() {
 
   tooltip.style.top = `${top + window.scrollY}px`;
   tooltip.style.left = `${left + window.scrollX}px`;
+  tooltip.style.transform = "none";
 
-  overlay.classList.remove("hidden");
-  tooltip.classList.remove("hidden");
-  text.innerText = step.text;
-
-  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  target.classList.add("highlighted");
+  nextButton.textContent = "İleri";
+  nextButton.onclick = nextStep;
 }
 
 function nextStep() {
