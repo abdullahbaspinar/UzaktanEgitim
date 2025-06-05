@@ -427,3 +427,6 @@
   border-radius: 8px;
   transition: outline 0.3s ease;
 }
+.hidden {
+  display: none !important;
+}

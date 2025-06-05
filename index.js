@@ -111,16 +111,46 @@ function sendMail(event) {
 
 // ONBOARDING – Sıralı tanıtım adımları
 const onboardingSteps = [
-  { selector: "body", text: "👋 Hoş geldin! Sana bu platformu adım adım tanıtalım.", isIntro: true },
-  { selector: ".nav-links a:nth-child(2)", text: "Buradan Almanca ünitelerine ulaşabilirsin." },
-  { selector: ".nav-links a:nth-child(3)", text: "Proje hakkında bilgi almak için burayı ziyaret et." },
-  { selector: ".nav-links a:nth-child(4)", text: "Bize ulaşmak istersen iletişim bölümünü kullanabilirsin." },
-  { selector: ".nav-links a:nth-child(5)", text: "Forum sayfasında toplulukla iletişime geçebilirsin." },
-  { selector: "#themeToggle", text: "🌗 Tema değiştiriciyle açık/koyu mod arasında geçiş yapabilirsin." },
-  { selector: "#units", text: "Ünite kartlarına buradan ulaşarak öğrenmeye başlayabilirsin." },
-  { selector: "#chatbotButton", text: "❓ Soruların mı var? Chatbot sana yardımcı olur!" },
-  { selector: "body", text: "✅ Hazırsan şimdi platformu kullanmaya başlayabilirsin!", isFinal: true }
+  {
+    selector: "body",
+    text: "👋 Hoş geldin! Sana bu platformu adım adım tanıtalım.",
+    isIntro: true
+  },
+  {
+    selector: ".nav-links a[href='index.html#units']",
+    text: "Buradan ünite sayfalarına geçebilirsin."
+  },
+  {
+    selector: ".nav-links a[href='index.html#about']",
+    text: "Bu bağlantı seni 'Hakkımızda' bölümüne götürür."
+  },
+  {
+    selector: ".nav-links a[href='index.html#contact']",
+    text: "Görüş ve öneri formuna buradan ulaşabilirsin."
+  },
+  {
+    selector: ".nav-links a[href='Forum/forum.html']",
+    text: "Forum sayfasına geçiş için burayı kullanabilirsin."
+  },
+  {
+    selector: "#themeToggle",
+    text: "Buradan açık / koyu tema arasında geçiş yapabilirsin."
+  },
+  {
+    selector: "#units",
+    text: "Burada tüm öğrenim ünitelerine erişebilirsin."
+  },
+  {
+    selector: "#chatbase-bubble",
+    text: "Soruların için sohbet botunu kullanabilirsin."
+  },
+  {
+    selector: "body",
+    text: "Tebrikler! Artık platformu kullanmaya hazırsın 🎉",
+    isFinal: true
+  }
 ];
+
 
 let currentStep = 0;
 
@@ -140,7 +170,7 @@ function showOnboardingStep() {
 
   const nextButton = tooltipBox.querySelector("button");
 
-  // Hoş geldin ekranı (merkezde sabit)
+  // Hoş geldin (ortalanmış sabit pozisyon)
   if (step.isIntro) {
     text.innerText = step.text;
     tooltip.style.position = "fixed";
@@ -152,7 +182,7 @@ function showOnboardingStep() {
     return;
   }
 
-  // Final adımı (başla butonu)
+  // Final adım
   if (step.isFinal) {
     text.innerText = step.text;
     tooltip.style.position = "fixed";
@@ -169,7 +199,6 @@ function showOnboardingStep() {
     return;
   }
 
-  // Standart adımlar
   if (!target) return;
 
   target.classList.add("highlighted");
@@ -200,6 +229,7 @@ function showOnboardingStep() {
   nextButton.textContent = "İleri";
   nextButton.onclick = nextStep;
 }
+
 
 
 function nextStep() {
