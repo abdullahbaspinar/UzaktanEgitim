@@ -1,14 +1,82 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const hasSeenGuide = localStorage.getItem("hasSeenGuide");
+const tourSteps = [
+  {
+    selector: ".nav-brand",
+    text: "Bu logoya tıklayarak her zaman ana sayfaya dönebilirsin."
+  },
+  {
+    selector: ".nav-links a:nth-child(1)",
+    text: "Ana Sayfa bağlantısı – buradan platforma genel bakış sağlayabilirsin."
+  },
+  {
+    selector: ".nav-links a:nth-child(2)",
+    text: "Üniteler sekmesi – Almanca derslerine buradan erişebilirsin."
+  },
+  {
+    selector: ".nav-links a:nth-child(3)",
+    text: "Hakkımızda – Projenin amacı ve arkasındaki ekip burada anlatılıyor."
+  },
+  {
+    selector: ".nav-links a:nth-child(4)",
+    text: "İletişim – Bize mesaj bırakmak istersen bu bölümü kullanabilirsin."
+  },
+  {
+    selector: ".nav-links a:nth-child(5)",
+    text: "Forum – Diğer kullanıcılarla etkileşime geçebileceğin alan."
+  },
+  {
+    selector: ".nav-links a:nth-child(6)",
+    text: "Buzkıran Cevapları – Topluluğun verdiği eğlenceli yanıtları buradan görebilirsin."
+  },
+  {
+    selector: "#themeToggle",
+    text: "🌙 Tema Değiştir – Aydınlık ve karanlık mod arasında geçiş yapar."
+  }
+];
 
-  if (!hasSeenGuide) {
-    document.getElementById("guideModal").style.display = "flex";
+let currentStep = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!localStorage.getItem("hasSeenTour")) {
+    startTour();
   }
 });
 
-function closeGuide() {
-  document.getElementById("guideModal").style.display = "none";
-  localStorage.setItem("hasSeenGuide", "true");
+function startTour() {
+  currentStep = 0;
+  showStep();
+}
+
+function showStep() {
+  const step = tourSteps[currentStep];
+  const element = document.querySelector(step.selector);
+  const tooltip = document.getElementById("tourTooltip");
+  const text = document.getElementById("tooltipText");
+
+  if (!element) return;
+
+  const rect = element.getBoundingClientRect();
+
+  tooltip.classList.remove("hidden");
+  tooltip.style.top = `${rect.bottom + window.scrollY + 10}px`;
+  tooltip.style.left = `${rect.left + window.scrollX}px`;
+
+  text.innerText = step.text;
+
+  element.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function nextStep() {
+  currentStep++;
+  if (currentStep < tourSteps.length) {
+    showStep();
+  } else {
+    endTour();
+  }
+}
+
+function endTour() {
+  document.getElementById("tourTooltip").classList.add("hidden");
+  localStorage.setItem("hasSeenTour", "true");
 }
 
 // Firebase ayarları

@@ -375,44 +375,34 @@
       background-color: #1e1e1e;
     }
   }
-  #guideModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  #tourTooltip {
+  position: absolute;
   z-index: 9999;
+  pointer-events: none;
 }
 
-#guideContent {
-  background-color: #fff;
+.tooltip-box {
+  background: #fff;
   color: #000;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 600px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  max-width: 250px;
   font-family: 'Inter', sans-serif;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  pointer-events: auto;
+  position: relative;
 }
 
-#guideContent h2 {
-  margin-bottom: 15px;
+.tooltip-box::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 20px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
 }
 
-#guideContent ul {
-  text-align: left;
-  margin: 15px 0;
-  padding-left: 20px;
-}
-
-#guideContent button {
-  padding: 10px 20px;
-  background-color: #0057a3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+#tourTooltip.hidden {
+  display: none;
 }

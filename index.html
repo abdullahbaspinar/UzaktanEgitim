@@ -25,23 +25,10 @@
 </nav>
 
 
-<!-- BUZKIRAN MODALI KALDIRILDI -->
-
-<!-- UYGULAMA TANITIM MODALI EKLENDİ -->
-<div id="guideModal">
-  <div id="guideContent">
-    <h2>👋 Hoş Geldin!</h2>
-    <p>Bu platformu daha verimli kullanabilmen için sana kısa bir tur hazırladık:</p>
-    <ul>
-      <li><strong>Ana Sayfa:</strong> Platformun genel tanıtımı ve ünite listesi.</li>
-      <li><strong>Üniteler:</strong> Öğrenmeye başlayabileceğin Almanca ders içerikleri.</li>
-      <li><strong>Hakkımızda:</strong> Projenin amacı ve ekip hakkında bilgiler.</li>
-      <li><strong>İletişim:</strong> Görüş ve önerilerini bizimle paylaşabileceğin form.</li>
-      <li><strong>Forum:</strong> Diğer kullanıcılarla iletişime geçebileceğin alan.</li>
-      <li><strong>Buzkıran Cevapları:</strong> Topluluğun önceki yanıtlarını görebileceğin eğlenceli bir bölüm.</li>
-      <li><strong>🌙 Tema Değiştir:</strong> Aydınlık ve karanlık modlar arasında geçiş yapar.</li>
-    </ul>
-    <button onclick="closeGuide()">Tamamdır!</button>
+<div id="tourTooltip" class="hidden">
+  <div class="tooltip-box">
+    <p id="tooltipText"></p>
+    <button onclick="nextStep()">İleri</button>
   </div>
 </div>
 
