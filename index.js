@@ -1,55 +1,3 @@
-const onboardingSteps = [
-  {
-    selector: ".nav-brand",
-    text: "Bu logoya tıklayarak ana sayfaya dönebilirsin."
-  },
-  {
-    selector: ".nav-links a:nth-child(2)",
-    text: "Buradan Almanca ünitelerine ulaşabilirsin."
-  },
-  {
-    selector: ".nav-links a:nth-child(3)",
-    text: "Proje hakkında bilgi almak için bu bölümü ziyaret et."
-  },
-  {
-    selector: ".nav-links a:nth-child(4)",
-    text: "Görüş ve önerilerini buradan bize iletebilirsin."
-  },
-  {
-    selector: ".nav-links a:nth-child(5)",
-    text: "Forum alanında diğer kullanıcılarla etkileşebilirsin."
-  },
-  {
-    selector: ".nav-links a:nth-child(6)",
-    text: "Topluluğun verdiği buzkıran cevaplarına buradan ulaşabilirsin."
-  },
-  {
-    selector: "#themeToggle",
-    text: "Tema tuşuyla açık ve koyu mod arasında geçiş yapabilirsin."
-  },
-  {
-    selector: "#units",
-    text: "Almanca derslerine buradaki ünite kartlarından başlayabilirsin."
-  },
-  {
-    selector: "#contact",
-    text: "Bize mesaj göndermek istersen bu formu doldurabilirsin."
-  },
-  {
-    selector: "#chatbotButton", // chatbot butonunun id'si
-    text: "Chatbot sana sorularında yardımcı olabilir."
-  }
-];
-
-let currentStep = 0;
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (!localStorage.getItem("hasSeenOnboarding")) {
-    disablePageInteraction();
-    showOnboardingStep();
-  }
-});
-
 function showOnboardingStep() {
   const step = onboardingSteps[currentStep];
   const target = document.querySelector(step.selector);
@@ -64,13 +12,39 @@ function showOnboardingStep() {
   target.classList.add("highlighted");
 
   const rect = target.getBoundingClientRect();
-  const tooltipRect = tooltipBox.getBoundingClientRect();
+  const scrollTop = window.scrollY;
+  const scrollLeft = window.scrollX;
+  const spacing = 12;
 
-  const top = rect.top + window.scrollY - tooltipRect.height - 20;
-  const left = rect.left + window.scrollX;
+  let top, left;
 
-  tooltip.style.top = `${Math.max(top, 10)}px`;
-  tooltip.style.left = `${Math.min(left, window.innerWidth - tooltipRect.width - 10)}px`;
+  // Ekranda yeterli boşluk varsa alta yerleştir
+  if (rect.bottom + spacing + tooltipBox.offsetHeight < window.innerHeight) {
+    top = rect.bottom + scrollTop + spacing;
+    left = rect.left + scrollLeft;
+  }
+  // Üste sığarsa üste yerleştir
+  else if (rect.top - spacing - tooltipBox.offsetHeight > 0) {
+    top = rect.top + scrollTop - tooltipBox.offsetHeight - spacing;
+    left = rect.left + scrollLeft;
+  }
+  // Sağa sığarsa sağa yerleştir
+  else if (rect.right + spacing + tooltipBox.offsetWidth < window.innerWidth) {
+    top = rect.top + scrollTop;
+    left = rect.right + scrollLeft + spacing;
+  }
+  // Yoksa sola yerleştir
+  else {
+    top = rect.top + scrollTop;
+    left = rect.left + scrollLeft - tooltipBox.offsetWidth - spacing;
+  }
+
+  // Ekran dışına taşmaması için sınırla
+  top = Math.max(10, Math.min(top, document.body.scrollHeight - tooltipBox.offsetHeight - 10));
+  left = Math.max(10, Math.min(left, document.body.scrollWidth - tooltipBox.offsetWidth - 10));
+
+  tooltip.style.top = `${top}px`;
+  tooltip.style.left = `${left}px`;
 
   overlay.classList.remove("hidden");
   tooltip.classList.remove("hidden");
@@ -78,45 +52,6 @@ function showOnboardingStep() {
   text.innerText = step.text;
 
   target.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
-function nextStep() {
-  currentStep++;
-  if (currentStep < onboardingSteps.length) {
-    showOnboardingStep();
-  } else {
-    endOnboarding();
-  }
-}
-
-function endOnboarding() {
-  document.getElementById("onboardingOverlay").classList.add("hidden");
-  document.getElementById("onboardingTooltip").classList.add("hidden");
-  removeHighlights();
-  localStorage.setItem("hasSeenOnboarding", "true");
-  enablePageInteraction();
-}
-
-function disablePageInteraction() {
-  document.body.style.overflow = 'hidden';
-  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-    if (!el.closest('#onboardingTooltip')) {
-      el.setAttribute('disabled', 'true');
-    }
-  });
-}
-
-function enablePageInteraction() {
-  document.body.style.overflow = '';
-  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-    el.removeAttribute('disabled');
-  });
-}
-
-function removeHighlights() {
-  document.querySelectorAll('.highlighted').forEach(el => {
-    el.classList.remove('highlighted');
-  });
 }
 
 // Firebase ayarları
